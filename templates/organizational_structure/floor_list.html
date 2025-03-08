@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pisos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .actions a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: white;
+        }
+        .actions a.edit {
+            background-color: #ffc107;
+        }
+        .actions a.delete {
+            background-color: #dc3545;
+        }
+        .actions a:hover {
+            opacity: 0.8;
+        }
+        .add-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .add-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Pisos</h1>
+    <a href="{% url 'organizational-structure:floor_create' %}" class="add-button">Crear Nuevo Piso</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for floor in floors %}
+            <tr>
+                <td>{{ floor.description }}</td>
+                <td>{{ floor.status|yesno:"Activo,Inactivo" }}</td>
+                <td class="actions">
+                    <a href="#" class="edit">Editar</a>
+                    <a href="#" class="delete">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No hay pisos registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
