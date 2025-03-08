@@ -17,12 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from core_apps.common.views import IndexView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
      # Aplicaciones locales
-     #path('common/', include('core_apps.common.urls')),
+    #path('common/', include('core_apps.common.urls')),
+    path('', IndexView.as_view(), name='index'),  # Ruta para la página de inicio
     path('computing-infrastructure/', include('core_apps.computing_infrastructure.urls')),
     path('organizational-structure/', include('core_apps.organizational_structure.urls')),
     path('stock-management/', include('core_apps.stock_management.urls')),

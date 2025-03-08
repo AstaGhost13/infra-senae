@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django_currentuser',
     'django.contrib.staticfiles',
      # Aplicaciones locales
-    #'core_apps.common',
+    'core_apps.common',
     'core_apps.computing_infrastructure',
     'core_apps.organizational_structure',
     'core_apps.stock_management',

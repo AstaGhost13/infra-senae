@@ -5,6 +5,8 @@ from django.views.generic import ListView
 from .models import Floor
 from .forms import FloorForm
 # Create your views here.
+
+#  Vista basada en clases
 class FloorCreateView(CreateView):
     model = Floor
     form_class = FloorForm

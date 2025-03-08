@@ -1,0 +1,13 @@
+{% extends 'layouts/base.html' %}  <!-- Extiende de un layout base si lo tienes -->
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold text-center">Bienvenido a Intra-Senae</h1>
+    <p class="mt-4 text-center">Gestiona tu infraestructura, estructura organizacional y stock de manera eficiente.</p>
+    <div class="mt-8 text-center">
+        <a href="{% url 'organizational-structure:floor_list' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Ver Pisos
+        </a>
+    </div>
+</div>
+{% endblock %}
