@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 
-{% block title %} Formulario de Piso {% endblock title %}
+{% block title %} Editar Piso {% endblock title %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <h1 class="text-white">Formulario de Piso</h1>
+            <h1 class="text-white">Editar Piso</h1>
         </div>
     </div>
 </div>
@@ -18,27 +18,13 @@
     <div class="row">
         <div class="col">
             <div class="card shadow">
-                <div class="card-header bg-transparent">
-                    <h3 class="mb-0">Agregar Piso</h3>
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Detalles del Piso</h3>
                 </div>
-                <div class="card-body">
-                    <!-- Mostrar mensajes de Django -->
-                    {% if messages %}
-                        <div class="container mt-3">
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <!-- Formulario de Crear Piso -->
-                    <form method="POST" action="{% url 'organizational-structure:floor_create' %}">
-                        {% csrf_token %}
+                <!-- Formulario de Edición -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-body">
                         <div class="row">
                             <!-- Campo Descripción -->
                             <div class="col-md-12">
@@ -61,12 +47,15 @@
                             <!-- Campo Estado -->
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="id_status">Estado</label>
+                                    <label for="status">Estado</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
                                         </div>
-                                        {{ form.status }}
+                                        <select class="form-control" id="status" name="status">
+                                            <option value="True" {% if floor.status %}selected{% endif %}>Activo</option>
+                                            <option value="False" {% if not floor.status %}selected{% endif %}>Inactivo</option>
+                                        </select>
                                     </div>
                                     {% for error in form.status.errors %}
                                     <small class="form-text text-danger">{{ error }}</small>
@@ -74,19 +63,19 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-primary me-2">Guardar</button>
-                            <a href="{% url 'organizational-structure:floor_list' %}" class="btn btn-secondary">Cancelar</a>
-                        </div>
-                    </form>
-                </div>
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <a href="{% url 'organizational-structure:floor_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    {% include "includes/footer.html" %}
 </div>
+
+<!-- Footer -->
+{% include "includes/footer.html" %}
 
 {% endblock content %}
