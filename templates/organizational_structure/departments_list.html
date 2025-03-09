@@ -20,7 +20,7 @@
       <div class="card shadow">
         <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
           <h3 class="mb-0">Departamentos Registrados</h3>
-          <a href="{% url 'organizational-structure:add_department' %}" class="btn btn-success">
+          <a href="{% url 'organizational_structure:add_department' %}" class="btn btn-success">
             Agregar Departamento
           </a>
         </div>
@@ -135,7 +135,7 @@
                             <i class="fas fa-ellipsis-v"></i>
                           </a>
                           <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a class="dropdown-item" href="{% url 'hierarchy:edit_department' department.id %}">Editar</a>
+                            <a class="dropdown-item" href="{% url 'organizational_structure:edit_department' department.id %}">Editar</a>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-delete-{{ department.id }}">Eliminar</a>
                           </div>
                         </div>
@@ -160,7 +160,7 @@
                             </div>
                           </div>
                           <div class="modal-footer">
-                            <form method="POST" action="{% url 'hierarchy:delete_department' department.id %}">
+                            <form method="POST" action="{% url 'organizational_structure:delete_department' department.id %}">
                               {% csrf_token %}
                               <button type="submit" class="btn btn-white">Sí, desactivar</button>
                             </form>

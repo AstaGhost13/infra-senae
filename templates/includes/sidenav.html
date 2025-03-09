@@ -28,20 +28,20 @@
               <div class="collapse show" id="organizacional" data-parent="#sidenav-collapse-main">
                 <ul class="nav nav-sm flex-column">
                   <li class="nav-item">
-                    <a class="nav-link"  href="{% url 'organizational-structure:floor_list' %}">
+                    <a class="nav-link"  href="{% url 'organizational_structure:floor_list' %}">
 
                       <i class="ni ni-building text-orange"></i>
                       <span class="nav-link-text">Piso</span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'organizational-structure:departments_list' %}">
+                    <a class="nav-link" href="{% url 'organizational_structure:departments_list' %}">
                       <i class="ni ni-world-2 text-primary"></i>
                       <span class="nav-link-text">Departamento</span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'organizational_structure:positions_list' %}">
                       <i class="ni ni-paper-diploma text-primary"></i>
                       <span class="nav-link-text">Cargo</span>
                     </a>
