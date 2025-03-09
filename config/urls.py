@@ -26,6 +26,7 @@ urlpatterns = [
      # Aplicaciones locales
     #path('common/', include('core_apps.common.urls')),
     path('', IndexView.as_view(), name='index'),  # Ruta para la página de inicio
+    path('account/', include('core_apps.account.urls')),
     path('computing-infrastructure/', include('core_apps.computing_infrastructure.urls')),
     path('organizational-structure/', include('core_apps.organizational_structure.urls')),
     path('stock-management/', include('core_apps.stock_management.urls')),

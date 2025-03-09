@@ -1,101 +1,219 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Pisos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #28a745;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-        .actions a {
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            color: white;
-        }
-        .actions a.edit {
-            background-color: #ffc107;
-        }
-        .actions a.delete {
-            background-color: #dc3545;
-        }
-        .actions a:hover {
-            opacity: 0.8;
-        }
-        .add-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .add-button:hover {
-            background-color: #218838;
-        }
-    </style>
-</head>
-<body>
-    <h1>Lista de Pisos</h1>
-    <a href="{% url 'organizational-structure:floor_create' %}" class="add-button">Crear Nuevo Piso</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for floor in floors %}
-            <tr>
-                <td>{{ floor.description }}</td>
-                <td>{{ floor.status|yesno:"Activo,Inactivo" }}</td>
-                <td class="actions">
-                    <a href="#" class="edit">Editar</a>
-                    <a href="#" class="delete">Eliminar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3">No hay pisos registrados.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'layouts/base.html' %}
+
+{% block title %} Lista de Pisos {% endblock title %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Lista de Pisos</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Pisos Registrados</h3>
+                    <a href="{% url 'organizational-structure:floor_create' %}" class="btn btn-success">
+                        Agregar Piso
+                    </a>
+                </div>
+                <div class="card-body">
+                    <!-- Mostrar mensajes de Django -->
+                    <div class="container mt-5" style="min-height: 50px;">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            {% endfor %}
+
+                            <script>
+                                // Ocultar el mensaje después de 3 segundos
+                                setTimeout(function() {
+                                    $(".alert").alert('close');
+                                }, 3000);
+                            </script>
+                        {% endif %}
+                    </div>
+
+                    <!-- Busqueda -->
+                    <form method="GET" action="" class="mb-4">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                                        </div>
+                                        <input class="form-control" name="q" placeholder="Buscar piso..." type="text" value="{{ query }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Tabla de pisos -->
+                    <div class="table-responsive">
+                        <table class="table align-items-center table-dark">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">
+                                        <a href="?sort=description&order={% if sort_field == 'description' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                                            Descripción {% if sort_field == 'description' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?sort=status&order={% if sort_field == 'status' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                                            Estado {% if sort_field == 'status' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">
+                                        <a href="?sort=created_at&order={% if sort_field == 'created_at' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                                            Creado el {% if sort_field == 'created_at' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                                        </a>
+                                    </th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                {% if floors %}
+                                    {% for floor in floors %}
+                                        <tr>
+                                            <td>{{ floor.description }}</td>
+                                            <td>
+                                                {% if floor.status %}
+                                                    <span class="badge badge-dot mr-4">
+                                                        <i class="bg-success"></i> Activo
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge badge-dot mr-4">
+                                                        <i class="bg-danger"></i> Inactivo
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ floor.created_at|date:"d/m/Y H:i" }}</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                                        <!-- Enlace para editar -->
+                                                        <a class="dropdown-item" href="{% url 'organizational-structure:floor_edit' floor.id %}">Editar</a>
+                                                        <!-- Enlace para eliminar (abre el modal) -->
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-delete-{{ floor.id }}">Eliminar</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Modal de confirmación para eliminar -->
+                                        <div class="modal fade" id="modal-delete-{{ floor.id }}" tabindex="-1" role="dialog" aria-labelledby="modal-delete-{{ floor.id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+                                                <div class="modal-content bg-gradient-danger">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modal-title-notification">Confirmar eliminación</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="py-3 text-center">
+                                                            <i class="ni ni-bell-55 ni-3x"></i>
+                                                            <h4 class="heading mt-4">¿Estás seguro de que quieres eliminar este piso?</h4>
+                                                            <p>Esta acción no se puede deshacer.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form method="POST" action="{% url 'organizational-structure:floor_delete' floor.id %}">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-white">Sí, eliminar</button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cerrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <div class="alert alert-warning" role="alert">
+                                                No se encontraron pisos con los criterios de búsqueda proporcionados.
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Paginación -->
+                    <div class="d-flex justify-content-center mt-4 mb-4">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                {% if floors.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ floors.previous_page_number }}&sort={{ sort_field }}&order={{ sort_order }}&q={{ query }}" tabindex="-1">
+                                            <i class="fa fa-angle-left"></i>
+                                            <span class="sr-only">Anterior</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">
+                                            <i class="fa fa-angle-left"></i>
+                                            <span class="sr-only">Anterior</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% for num in floors.paginator.page_range %}
+                                    {% if floors.number == num %}
+                                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ num }}&sort={{ sort_field }}&order={{ sort_order }}&q={{ query }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if floors.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ floors.next_page_number }}&sort={{ sort_field }}&order={{ sort_order }}&q={{ query }}">
+                                            <i class="fa fa-angle-right"></i>
+                                            <span class="sr-only">Siguiente</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">
+                                            <i class="fa fa-angle-right"></i>
+                                            <span class="sr-only">Siguiente</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include "includes/footer.html" %}
+</div>
+
+{% endblock content %}

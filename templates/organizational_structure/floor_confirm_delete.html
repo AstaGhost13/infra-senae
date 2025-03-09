@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Eliminar Piso {% endblock title %}
+
+{% block content %}
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">Eliminar Piso</h3>
+                </div>
+                <div class="card-body">
+                    <p>¿Estás seguro de que deseas eliminar el piso "{{ object.description }}"?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                        <a href="{% url 'organizational-structure:floor_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

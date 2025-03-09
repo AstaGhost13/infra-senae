@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core_apps.computing_infrastructure',
     'core_apps.organizational_structure',
     'core_apps.stock_management',
+    'core_apps.account',
   
 ]
 

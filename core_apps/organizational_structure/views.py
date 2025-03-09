@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import *
 from django.views.generic import ListView
 from .models import Floor
 from .forms import FloorForm
@@ -17,3 +17,17 @@ class FloorListView(ListView):
     model = Floor
     template_name = 'organizational_structure/floor_list.html'  # Ruta corregida
     context_object_name = 'floors'  # Nombre del objeto en la plantilla
+
+
+    # Vista para editar un piso
+class FloorUpdateView(UpdateView):
+    model = Floor
+    form_class = FloorForm
+    template_name = 'organizational_structure/floor_form.html'
+    success_url = reverse_lazy('organizational-structure:floor_list')
+
+# Vista para eliminar un piso
+class FloorDeleteView(DeleteView):
+    model = Floor
+    template_name = 'organizational_structure/floor_confirm_delete.html'  # Plantilla de confirmación
+    success_url = reverse_lazy('organizational-structure:floor_list')
