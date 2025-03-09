@@ -22,7 +22,7 @@
                     <h3 class="mb-0">Detalles del Piso</h3>
                 </div>
                 <!-- Formulario de Edición -->
-                <form method="POST">
+                <form method="POST" action="{% url 'organizational-structure:floor_edit' form.instance.id %}">
                     {% csrf_token %}
                     <div class="card-body">
                         <div class="row">
@@ -47,15 +47,12 @@
                             <!-- Campo Estado -->
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="status">Estado</label>
+                                    <label for="id_status">Estado</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
                                         </div>
-                                        <select class="form-control" id="status" name="status">
-                                            <option value="True" {% if floor.status %}selected{% endif %}>Activo</option>
-                                            <option value="False" {% if not floor.status %}selected{% endif %}>Inactivo</option>
-                                        </select>
+                                        {{ form.status }}
                                     </div>
                                     {% for error in form.status.errors %}
                                     <small class="form-text text-danger">{{ error }}</small>
