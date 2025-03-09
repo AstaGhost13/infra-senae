@@ -82,7 +82,7 @@ class Position(models.Model):
 
 
 
-class Custodiam(models.Model):
+class Custodian(models.Model):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
@@ -98,7 +98,7 @@ class Custodiam(models.Model):
     address = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Address'))
     reference = models.CharField(max_length=100, blank=True, null=True, verbose_name=_('Reference'))
     email = models.EmailField(verbose_name=_("Email Address"), unique=True, db_index=True)
-    position = models.ForeignKey(Position, verbose_name=('Cargo'), on_delete=models.SET_NULL, blank=True, null=True, related_name="custodiams")
+    position = models.ForeignKey(Position, verbose_name=('Cargo'), on_delete=models.SET_NULL, blank=True, null=True, related_name="custodians")
 
 
     def __str__(self):
@@ -115,5 +115,5 @@ class Custodiam(models.Model):
     
     class Meta:
         verbose_name_plural = _('Custodios')
-        db_table = 'tb_security_custodiam'
+        db_table = 'tb_security_custodian'
         verbose_name = _('Custodio')

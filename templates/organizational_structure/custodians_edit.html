@@ -1,0 +1,176 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Editar Custodio {% endblock title %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Editar Custodio</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Detalles del Custodio</h3>
+                </div>
+
+                <div class="card-body">
+                    <!-- Mostrar mensajes de Django -->
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Formulario de Edición -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <!-- Campo Nombre -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_first_name">Nombre</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        {{ form.first_name }}
+                                    </div>
+                                    {% for error in form.first_name.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Apellido -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_last_name">Apellido</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        {{ form.last_name }}
+                                    </div>
+                                    {% for error in form.last_name.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Teléfono -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_phone_number">Número de Teléfono</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
+                                        </div>
+                                        {{ form.phone_number }}
+                                    </div>
+                                    {% for error in form.phone_number.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Dirección -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_address">Dirección</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        {{ form.address }}
+                                    </div>
+                                    {% for error in form.address.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Referencia -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_reference">Referencia</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map-signs"></i></span>
+                                        </div>
+                                        {{ form.reference }}
+                                    </div>
+                                    {% for error in form.reference.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Email -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_email">Correo Electrónico</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        </div>
+                                        {{ form.email }}
+                                    </div>
+                                    {% for error in form.email.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Cargo -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_position">Cargo</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                        </div>
+                                        {{ form.position }}  <!-- Usa el widget de Django -->
+                                    </div>
+                                    {% for error in form.position.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <a href="{% url 'organizational_structure:custodians_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include "includes/footer.html" %}
+</div>
+
+{% endblock content %}

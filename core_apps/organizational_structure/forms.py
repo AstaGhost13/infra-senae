@@ -1,5 +1,5 @@
 from django import forms
-from .models import Custodiam, Department, Floor, Position
+from .models import Custodian, Department, Floor, Position
 
 class FloorForm(forms.ModelForm):
     class Meta:
@@ -45,9 +45,9 @@ class PositionForm(forms.ModelForm):
         }
 
 
-class CustodiamForm(forms.ModelForm):
+class CustodianForm(forms.ModelForm):
     class Meta:
-        model = Custodiam
+        model = Custodian
         fields = ['first_name', 'last_name', 'phone_number', 'address', 'reference', 'email', 'position']
         widgets = {
             'first_name': forms.TextInput(attrs={

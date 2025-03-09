@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import *
 from django.views.generic import ListView
-from .models import Department, Floor, Position
-from .forms import DepartmentForm, FloorForm, PositionForm
+from .models import Custodian, Department, Floor, Position
+from .forms import CustodianForm, DepartmentForm, FloorForm, PositionForm
 # Create your views here.
 
 #  Vista basada en clases
@@ -226,4 +226,79 @@ class PositionDeleteView(DeleteView):
         position.status = False  # Desactivar el cargo
         position.save()
         messages.success(request, "El cargo ha sido desactivado correctamente.")
+        return super().post(request, *args, **kwargs)
+    
+# Vista para listar las custodias
+
+
+class CustodianListView(ListView):
+    model = Custodian
+    template_name = "organizational_structure/custodians_list.html"
+    context_object_name = "custodians"
+    paginate_by = 10  # Número de custodios por página
+
+    def get_queryset(self):
+        query = self.request.GET.get("q", "")
+        sort_field = self.request.GET.get("sort", "first_name")
+        sort_order = self.request.GET.get("order", "asc")
+
+        custodians = Custodian.objects.filter(status=True)
+
+        if query:
+            custodians = custodians.filter(first_name__icontains=query)
+
+        if sort_order == "desc":
+            sort_field = f"-{sort_field}"
+        
+        return custodians.order_by(sort_field)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get("q", "")
+        context['sort_field'] = self.request.GET.get("sort", "first_name").lstrip("-")
+        context['sort_order'] = self.request.GET.get("order", "asc")
+        return context
+    
+class CustodianCreateView(CreateView):
+    model = Custodian
+    form_class = CustodianForm
+    template_name = "organizational_structure/custodians_add.html"
+    success_url = reverse_lazy("organizational_structure:custodians_list")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Custodio creado correctamente.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Hubo un error al crear el custodio.")
+        return super().form_invalid(form)
+
+
+class CustodianUpdateView(UpdateView):
+    model = Custodian
+    form_class = CustodianForm
+    template_name = "organizational_structure/custodians_edit.html"
+    success_url = reverse_lazy("organizational_structure:custodians_list")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Custodio actualizado correctamente.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Hubo un error al actualizar el custodio.")
+        return super().form_invalid(form)
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Custodian, id=self.kwargs["pk"])
+    
+class CustodianDeleteView(DeleteView):
+    model = Custodian
+    template_name = "organizational_structure/custodians_confirm_delete.html"
+    success_url = reverse_lazy("organizational_structure:custodians_list")
+
+    def post(self, request, *args, **kwargs):
+        custodian = self.get_object()
+        custodian.status = False  # Desactivar al custodio
+        custodian.save()
+        messages.success(request, "El custodio ha sido desactivado correctamente.")
         return super().post(request, *args, **kwargs)
