@@ -19,7 +19,7 @@ from django.urls import include, path
 
 from core_apps.common.views import IndexView
 
-
+#urls de la aplicacion
 urlpatterns = [
     path('admin/', admin.site.urls),
 
