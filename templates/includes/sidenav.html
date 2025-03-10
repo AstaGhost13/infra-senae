@@ -11,20 +11,23 @@
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
           <!-- Nav items -->
           <ul class="navbar-nav">
+            
             <!-- Dashboard -->
             <li class="nav-item">
               <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
               </a>
+              
             </li>
-  
+
             <!-- Bloque 1: Estructura Organizacional -->
             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#organizacional" aria-expanded="true">
                 <i class="ni ni-briefcase-24 text-info"></i>
                 <span class="nav-link-text">Estructura Organizacional</span>
               </a>
+              
               <div class="collapse show" id="organizacional" data-parent="#sidenav-collapse-main">
                 <ul class="nav nav-sm flex-column">
                   <li class="nav-item">
@@ -146,38 +149,13 @@
               </div>
             </li>
   
-            <!-- Profile -->
-            <li class="nav-item">
-              <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="#">
-                <i class="ni ni-single-02 text-yellow"></i>
-                <span class="nav-link-text">Profile</span>
-              </a>
-            </li>
-  
-            <!-- Tables -->
-            <li class="nav-item">
-              <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="#>
-                <i class="ni ni-bullet-list-67 text-default"></i>
-                <span class="nav-link-text">Tables</span>
-              </a>
-            </li>
+
+
           </ul>
   
           <!-- Divider -->
           <hr class="my-3">
-  
-          <!-- Resources Section -->
-          <h6 class="navbar-heading p-0 text-muted">
-            <span class="docs-normal">Resources</span>
-          </h6>
-          <ul class="navbar-nav mb-md-3">
-            <li class="nav-item">
-              <a class="nav-link" target="_blank" href="#">
-                <i class="ni ni-archive-2"></i>
-                <span class="nav-link-text">Prueba</span>
-              </a>
-            </li>
-          </ul>
+
         </div>
       </div>
     </div>
